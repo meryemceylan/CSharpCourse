@@ -14,6 +14,16 @@ namespace Interfaces
 
             // InterfacesDemo();
 
+            IPersonManager employeeManager = new EmployeeManager();
+            employeeManager.Update();
+
+            ProjectManager projectManager = new ProjectManager();
+            projectManager.Add(employeeManager);
+            projectManager.Add(new InternManager());
+
+
+
+
             ICustomerDal[] customerDals = new ICustomerDal[2] 
             { 
             new SqlServerCustomerDal(),
@@ -32,6 +42,7 @@ namespace Interfaces
         {
             CustomerManager customerManager = new CustomerManager();
             customerManager.Add(new OracleCustomerDal());
+
         }
 
         private static void InterfacesIntro()
@@ -80,9 +91,53 @@ namespace Interfaces
     }
     class PersonManager
     {
+        //implemented operation : içi doldurulmuş, tamamlanmış operasyon
         public void Add(IPerson person)
         {
             Console.WriteLine(person.FirstName);
         }
     }
+    
+    
+    interface IPersonManager
+    {
+        //unimplemented operation
+        void Add();
+        void Update();
+
+    }
+    class EmployeeManager : IPersonManager
+    {
+        public void Add()
+        {
+            Console.WriteLine("Personel eklendi");
+        }
+
+        public void Update()
+        {
+            Console.WriteLine("Personel güncellendi");
+        }
+    }
+    class InternManager : IPersonManager
+    {
+        public void Add()
+        {
+            Console.WriteLine("Stajyer eklendi");
+        }
+
+        public void Update()
+        {
+            Console.WriteLine("Stajyer güncellendi");
+        }
+    }
+
+    class ProjectManager
+    {
+        public void Add(IPersonManager personManager)
+        {
+            personManager.Add();
+        }
+        
+    }
+
 }
